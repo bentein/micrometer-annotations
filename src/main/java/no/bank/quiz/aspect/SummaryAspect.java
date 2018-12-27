@@ -24,12 +24,10 @@ class SummaryAspect {
     @Autowired
     private PrometheusMeterRegistry registry;
 
-    @AfterReturning(value = "@annotation(annotation)", returning = "retval")
-    public void registerSummaryAnnotation(Object retval, Summary annotation) throws Throwable {
-        System.out.println(retval instanceof List);
-
-        DistributionSummary sum = getSummary(annotation);
-        sum.record(retval.toString().length());
+    @AfterReturning(value = "@annotation(annotation)", returning = "retVal")
+    public void registerSummaryAnnotation(Object retVal, Summary annotation) throws Throwable {
+        DistributionSummary summary = getSummary(annotation);
+        summary.record(retVal.toString().length());
     }
 
     private DistributionSummary getSummary(Summary annotation) {

@@ -35,6 +35,6 @@ class TimeHistogramAspect {
                 .register(registry);
 
         timer.record(System.currentTimeMillis() - start, TimeUnit.MILLISECONDS);
-        return joinPoint.proceed();
+        return proceed;
     }
 }
