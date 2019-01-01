@@ -3,7 +3,6 @@ package no.bank.quiz.aspect;
 import io.micrometer.core.instrument.Timer;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 import no.bank.quiz.annotation.TimeHistogram;
-import no.bank.quiz.annotation.Timed;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

@@ -1,11 +1,9 @@
 package no.bank.quiz.config;
 
 import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Timer;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 import no.bank.quiz.annotation.Counted;
-import no.bank.quiz.annotation.Summary;
 import no.bank.quiz.annotation.TimeHistogram;
 import no.bank.quiz.annotation.Timed;
 import org.reflections.Reflections;
@@ -38,7 +36,6 @@ public class AppConfig {
                 .setScanners(new MethodAnnotationsScanner(), new FieldAnnotationsScanner()));
 
         registerCountedAnnotations(ref);
-        registerSummaryAnnotations(ref);
         registerTimedAnnotations(ref);
         registerTimeHistogramAnnotations(ref);
     }
@@ -47,26 +44,6 @@ public class AppConfig {
         List<Counter> counters = ref.getMethodsAnnotatedWith(Counted.class).stream()
                 .map(m -> m.getAnnotation(Counted.class))
                 .map(a -> Counter.builder(a.value())
-                        .description(a.description())
-                        .register(registry))
-                .collect(Collectors.toList());
-    }
-
-    private void registerSummaryAnnotations(Reflections ref) {
-        List<DistributionSummary> methodSummaries = ref.getMethodsAnnotatedWith(Summary.class).stream()
-                .map(m -> m.getAnnotation(Summary.class))
-                .map(a -> DistributionSummary.builder(a.value())
-                        .baseUnit(a.unit())
-                        .scale(a.scale())
-                        .description(a.description())
-                        .register(registry))
-                .collect(Collectors.toList());
-
-        List<DistributionSummary> fieldSummary = ref.getFieldsAnnotatedWith(Summary.class).stream()
-                .map(m -> m.getAnnotation(Summary.class))
-                .map(a -> DistributionSummary.builder(a.value())
-                        .baseUnit(a.unit())
-                        .scale(a.scale())
                         .description(a.description())
                         .register(registry))
                 .collect(Collectors.toList());
